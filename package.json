@@ -1,0 +1,31 @@
+{
+  "name": "bundle-szie-compare",
+  "version": "1.0.0",
+  "author": "ashwinkumar6",
+  "license": "ISC",
+  "description": "aws-amplify/storage vs s3 V3 SDK",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack ./webpack.config.js",
+    "size": "npm run build && size-limit",
+    "test": "vitest && eslint . && npm run size"
+  },
+  "dependencies": {
+    "aws-amplify": "^6.6.4"
+  },
+  "devDependencies": {
+    "@size-limit/dual-publish": "^9.0.0",
+    "@size-limit/file": "^11.1.6",
+    "@size-limit/webpack": "^11.1.6",
+    "@size-limit/webpack-why": "^11.1.6",
+    "size-limit": "^11.1.6"
+  },
+  "size-limit": [
+    {
+      "name": "aws-amplify list",
+      "path": "dist/app-*.js",
+      "import": "{ list }",
+      "limit": "1 kB"
+    }
+  ]
+}
