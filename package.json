@@ -6,15 +6,15 @@
   "description": "aws-amplify/storage vs s3 V3 SDK",
   "main": "index.js",
   "scripts": {
-    "build": "webpack ./webpack.config.js",
-    "size": "npm run build && size-limit",
-    "test": "vitest && eslint . && npm run size"
+    "nuke": "rm -rf node_modules yarn.lock && yarn",
+    "size-limit": "size-limit"
   },
   "dependencies": {
-    "aws-amplify": "^6.6.4"
+    "@aws-sdk/client-s3": "^3.670.0",
+    "@aws-sdk/lib-storage": "^3.673.0",
+    "@aws-sdk/s3-request-presigner": "^3.670.0"
   },
   "devDependencies": {
-    "@size-limit/dual-publish": "^9.0.0",
     "@size-limit/file": "^11.1.6",
     "@size-limit/webpack": "^11.1.6",
     "@size-limit/webpack-why": "^11.1.6",
@@ -22,10 +22,142 @@
   },
   "size-limit": [
     {
-      "name": "aws-amplify list",
-      "path": "dist/app-*.js",
+      "name": "aws-amplify: list",
+      "path": "src/list/amplify.js",
       "import": "{ list }",
-      "limit": "1 kB"
+      "limit": "14.4 kB"
+    },
+    {
+      "name": "aws-amplify (internals) : list",
+      "path": "src/list/amplifyAdvanced.js",
+      "import": "{ list }",
+      "limit": "14.48 kB"
+    },
+    {
+      "name": "s3 sdk: S3Client, ListObjectsV2Command",
+      "path": "src/list/s3.js",
+      "import": "{ S3Client, ListObjectsV2Command }",
+      "limit": "51.77 kB"
+    },
+    {
+      "name": "aws-amplify: remove",
+      "path": "src/remove/amplify.js",
+      "import": "{ remove }",
+      "limit": "13.664 kB"
+    },
+    {
+      "name": "aws-amplify (internals) : remove",
+      "path": "src/remove/amplifyAdvanced.js",
+      "import": "{ remove }",
+      "limit": "13.7 kB"
+    },
+    {
+      "name": "s3 sdk: S3Client, DeleteObjectCommand",
+      "path": "src/remove/s3.js",
+      "import": "{ S3Client, DeleteObjectCommand }",
+      "limit": "51.26 kB"
+    },
+    {
+      "name": "aws-amplify: copy",
+      "path": "src/copy/amplify.js",
+      "import": "{ copy }",
+      "limit": "14.151 kB"
+    },
+    {
+      "name": "aws-amplify (internals) : copy",
+      "path": "src/copy/amplifyAdvanced.js",
+      "import": "{ copy }",
+      "limit": "14.21 kB"
+    },
+    {
+      "name": "s3 sdk: S3Client, CopyObjectCommand",
+      "path": "src/copy/s3.js",
+      "import": "{ S3Client, CopyObjectCommand }",
+      "limit": "52.401 kB"
+    },
+    {
+      "name": "aws-amplify: getProperties",
+      "path": "src/getProperties/amplify.js",
+      "import": "{ getProperties }",
+      "limit": "13.78 kB"
+    },
+    {
+      "name": "aws-amplify (internals) : getProperties",
+      "path": "src/getProperties/amplifyAdvanced.js",
+      "import": "{ getProperties }",
+      "limit": "13.794 kB"
+    },
+    {
+      "name": "s3 sdk: S3Client, HeadObjectCommand",
+      "path": "src/getProperties/s3.js",
+      "import": "{ S3Client, HeadObjectCommand }",
+      "limit": "52.88 kB"
+    },
+    {
+      "name": "aws-amplify: getUrl",
+      "path": "src/getUrl/amplify.js",
+      "import": "{ getUrl }",
+      "limit": "14.89 kB"
+    },
+    {
+      "name": "aws-amplify (internals) : getUrl",
+      "path": "src/getUrl/amplifyAdvanced.js",
+      "import": "{ getUrl }",
+      "limit": "14.94 kB"
+    },
+    {
+      "name": "s3 sdk: S3Client, GetObjectCommand, getSignedUrl",
+      "path": "src/getUrl/s3.js",
+      "import": "{ S3Client, GetObjectCommand, getSignedUrl }",
+      "limit": "54.684 kB"
+    },
+    {
+      "name": "aws-amplify: downloadData",
+      "path": "src/downloadData/amplify.js",
+      "import": "{ downloadData }",
+      "limit": "14.47 kB"
+    },
+    {
+      "name": "aws-amplify (internals) : downloadData",
+      "path": "src/downloadData/amplifyAdvanced.js",
+      "import": "{ downloadData }",
+      "limit": "14.521 kB"
+    },
+    {
+      "name": "s3 sdk: S3Client, GetObjectCommand",
+      "path": "src/downloadData/s3.js",
+      "import": "{ S3Client, GetObjectCommand }",
+      "limit": "53.98 kB"
+    },
+    {
+      "name": "aws-amplify: uploadData",
+      "path": "src/uploadData/amplify.js",
+      "import": "{ uploadData }",
+      "limit": "19.581 kB"
+    },
+    {
+      "name": "aws-amplify (internals) : uploadData",
+      "path": "src/uploadData/amplifyAdvanced.js",
+      "import": "{ uploadData }",
+      "limit": "19.611 kB"
+    },
+    {
+      "name": "s3 sdk: S3Client, PutObjectCommand - singlePart",
+      "path": "src/uploadData/s3OnlySinglePart.js",
+      "import": "{ S3Client, PutObjectCommand }",
+      "limit": "53.351 kB"
+    },
+    {
+      "name": "s3 sdk: S3Client, CreateMultipartUploadCommand, AbortMultipartUploadCommand, CompleteMultipartUploadCommand, ListPartsCommand, UploadPartCommand, - multiPart",
+      "path": "src/uploadData/s3OnlyMultiPart.js",
+      "import": "{ S3Client, CreateMultipartUploadCommand, AbortMultipartUploadCommand, CompleteMultipartUploadCommand, ListPartsCommand, UploadPartCommand }",
+      "limit": "55.001 kB"
+    },
+    {
+      "name": "s3 sdk: S3Client, Upload - built in singlePart + multiPart",
+      "path": "src/uploadData/s3.js",
+      "import": "{ S3Client, Upload }",
+      "limit": "73.882 kB"
     }
   ]
 }
